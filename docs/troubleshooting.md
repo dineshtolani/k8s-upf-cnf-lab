@@ -125,7 +125,8 @@ Switch the NAD from `macvlan` to **`ipvlan` in L2 mode**. ipvlan reuses the
 parent NIC's MAC, so VMware's MAC filter is satisfied. The pod still gets a
 distinct IP on the same subnet.
 
-```json
+
+
 {
   "cniVersion": "0.3.1",
   "type": "ipvlan",
@@ -139,11 +140,15 @@ distinct IP on the same subnet.
   }
 }
 
+
+
+
 Note
 The pod → node ping still fails with ipvlan (same kernel restriction), and
 that is expected. It does not affect the UPF use case.
 Issue #5 — UPF Image Not Found (ImagePullBackOff)
 
+## Issue #5 — UPF Image Not Found (ImagePullBackOff)
 Symptom
 
 Failed to pull image "omecproject/upf-epc-bess:local":
