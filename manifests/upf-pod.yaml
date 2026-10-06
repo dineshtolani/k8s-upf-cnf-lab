@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: upf-config
+  namespace: default
+data:
+  upf.json: |
+    {
+      "mode": "af_packet",
+      "hwcksum": false,
+      "log_level": "debug",
+      "gtppsc": true,
+      "measure_upf": false,
+      "access": {
+        "ifname": "net1"
+      },
+      "core": {
+        "ifname": "eth0"
+      },
+      "cpiface": {
+        "dnn": "internet",
+        "hostname": "192.168.170.190",
+        "enable_ue_ip_alloc": true,
+        "ue_ip_pool": "172.250.0.0/16"
+      }
+    }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: upf-bess
+  namespace: default
+  labels:
+    app: upf
+  annotations:
+    #k8s.v1.cni.cncf.io/networks: upf-ipvlan
+    k8s.v1.cni.cncf.io/networks: '[
+      {
+        "name": "upf-ipvlan",
+        "interface": "net1",
+        "ips": ["192.168.170.190/24"]
+      }
+    ]'
+spec:
+  containers:
+  - name: bess
+    image: upf-bess:2.6.4-dev
+    imagePullPolicy: Never
+    securityContext:
+      capabilities:
+        add:
+        - IPC_LOCK
+        - NET_ADMIN
+        - NET_RAW
+    command: ["/bin/sh", "-c"]
+    args:
+    - |
+      /usr/bin/bessd -f /conf/upf.json      
+    volumeMounts:
+    - name: upf-config
+      mountPath: /conf
+    - name: hugepages
+      mountPath: /dev/hugepages
+    - name: bpf
+      mountPath: /sys/fs/bpf
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+        hugepages-1Gi: "1Gi"
+      limits:
+        cpu: "1500m"
+        memory: "2Gi"
+        hugepages-1Gi: "1Gi"
+  - name: pfcpiface
+    image: upf-pfcp:2.6.4-dev
+    imagePullPolicy: Never
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+        - NET_RAW
+    command: ["/bin/sh", "-c"]
+    args:
+    - |
+      /bin/pfcpiface -config /conf/upf.json
+    volumeMounts:
+    - name: upf-config
+      mountPath: /conf
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+  volumes:
+  - name: upf-config
+    configMap:
+      name: upf-config
+  - name: hugepages
+    emptyDir:
+      medium: HugePages
+  - name: bpf
+    hostPath:
+      path: /sys/fs/bpf
+      type: DirectoryOrCreate

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multus-test
+  annotations:
+    k8s.v1.cni.cncf.io/networks: upf-ipvlan
+spec:
+  containers:
+  - name: test
+    image: nicolaka/netshoot
+    command: ["sleep", "3600"]
