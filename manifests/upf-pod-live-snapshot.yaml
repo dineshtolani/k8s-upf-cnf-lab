@@ -1,0 +1,288 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/containerID: b85ac5d36d706d230250f721d48c33b7bc029baef2c9e995ba831d388ac96ae0
+    cni.projectcalico.org/podIP: 192.168.249.9/32
+    cni.projectcalico.org/podIPs: 192.168.249.9/32
+    k8s.v1.cni.cncf.io/network-status: |-
+      [{
+          "name": "k8s-pod-network",
+          "interface": "eth0",
+          "ips": [
+              "192.168.249.9"
+          ],
+          "mac": "1e:ff:ff:0c:de:e8",
+          "default": true,
+          "dns": {}
+      },{
+          "name": "default/upf-ipvlan",
+          "interface": "net1",
+          "ips": [
+              "192.168.170.190"
+          ],
+          "mac": "00:50:56:34:25:9e",
+          "dns": {}
+      }]
+    k8s.v1.cni.cncf.io/networks: '[ { "name": "upf-ipvlan", "interface": "net1", "ips":
+      ["192.168.170.190/24"] } ]'
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{"k8s.v1.cni.cncf.io/networks":"[ { \"name\": \"upf-ipvlan\", \"interface\": \"net1\", \"ips\": [\"192.168.170.190/24\"] } ]"},"labels":{"app":"upf"},"name":"upf-bess","namespace":"default"},"spec":{"containers":[{"args":["/usr/bin/bessd -f /conf/upf.json      \n"],"command":["/bin/sh","-c"],"image":"upf-bess:2.6.4-dev","imagePullPolicy":"Never","name":"bess","resources":{"limits":{"cpu":"1500m","hugepages-1Gi":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","hugepages-1Gi":"1Gi","memory":"1Gi"}},"securityContext":{"capabilities":{"add":["IPC_LOCK","NET_ADMIN","NET_RAW"]}},"volumeMounts":[{"mountPath":"/conf","name":"upf-config"},{"mountPath":"/dev/hugepages","name":"hugepages"},{"mountPath":"/sys/fs/bpf","name":"bpf"}]},{"args":["/bin/pfcpiface -config /conf/upf.json\n"],"command":["/bin/sh","-c"],"image":"upf-pfcp:2.6.4-dev","imagePullPolicy":"Never","name":"pfcpiface","resources":{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"256Mi"}},"securityContext":{"capabilities":{"add":["NET_ADMIN","NET_RAW"]}},"volumeMounts":[{"mountPath":"/conf","name":"upf-config"}]}],"volumes":[{"configMap":{"name":"upf-config"},"name":"upf-config"},{"emptyDir":{"medium":"HugePages"},"name":"hugepages"},{"hostPath":{"path":"/sys/fs/bpf","type":"DirectoryOrCreate"},"name":"bpf"}]}}
+  creationTimestamp: "2026-10-06T06:50:51Z"
+  generation: 1
+  labels:
+    app: upf
+  name: upf-bess
+  namespace: default
+  resourceVersion: "45598"
+  uid: 0ec73855-2ab7-48da-b5bd-37f502ee3748
+spec:
+  containers:
+  - args:
+    - "/usr/bin/bessd -f /conf/upf.json      \n"
+    command:
+    - /bin/sh
+    - -c
+    image: upf-bess:2.6.4-dev
+    imagePullPolicy: Never
+    name: bess
+    resources:
+      limits:
+        cpu: 1500m
+        hugepages-1Gi: 1Gi
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        hugepages-1Gi: 1Gi
+        memory: 1Gi
+    securityContext:
+      capabilities:
+        add:
+        - IPC_LOCK
+        - NET_ADMIN
+        - NET_RAW
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /conf
+      name: upf-config
+    - mountPath: /dev/hugepages
+      name: hugepages
+    - mountPath: /sys/fs/bpf
+      name: bpf
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-58g6f
+      readOnly: true
+  - args:
+    - |
+      /bin/pfcpiface -config /conf/upf.json
+    command:
+    - /bin/sh
+    - -c
+    image: upf-pfcp:2.6.4-dev
+    imagePullPolicy: Never
+    name: pfcpiface
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+        - NET_RAW
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /conf
+      name: upf-config
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-58g6f
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: k8snode1
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: upf-config
+    name: upf-config
+  - emptyDir:
+      medium: HugePages
+    name: hugepages
+  - hostPath:
+      path: /sys/fs/bpf
+      type: DirectoryOrCreate
+    name: bpf
+  - name: kube-api-access-58g6f
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  allocatedResources:
+    cpu: 750m
+    hugepages-1Gi: 1Gi
+    memory: 1280Mi
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-06T06:50:52Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-06T06:50:51Z"
+    observedGeneration: 1
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-06T06:50:52Z"
+    observedGeneration: 1
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-06T06:50:52Z"
+    observedGeneration: 1
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-06T06:50:51Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - allocatedResources:
+      cpu: 500m
+      hugepages-1Gi: 1Gi
+      memory: 1Gi
+    containerID: containerd://45ef389cf45959e3b7c8251c9e531e8f1dfd307dc9a7c0a74305f0cfbfc74a3b
+    image: docker.io/library/upf-bess:2.6.4-dev
+    imageID: sha256:5a0729a0702ca659aecd850b5baaf9f215fa070e2e971c3e1701bd63e7b121a6
+    lastState: {}
+    name: bess
+    ready: true
+    resources:
+      limits:
+        cpu: 1500m
+        hugepages-1Gi: 1Gi
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        hugepages-1Gi: 1Gi
+        memory: 1Gi
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2026-10-06T06:50:52Z"
+    user:
+      linux:
+        gid: 0
+        supplementalGroups:
+        - 0
+        uid: 0
+    volumeMounts:
+    - mountPath: /conf
+      name: upf-config
+    - mountPath: /dev/hugepages
+      name: hugepages
+    - mountPath: /sys/fs/bpf
+      name: bpf
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-58g6f
+      readOnly: true
+      recursiveReadOnly: Disabled
+  - allocatedResources:
+      cpu: 250m
+      memory: 256Mi
+    containerID: containerd://b543155460b303a99431fa334605ae4f84fea489bfe9ea3be24e91bb64a1731d
+    image: docker.io/library/upf-pfcp:2.6.4-dev
+    imageID: sha256:bada703c4edc464ecc3ed0c9a8efd7282e99031113459dcf4941e076c5d0b8f4
+    lastState: {}
+    name: pfcpiface
+    ready: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2026-10-06T06:50:52Z"
+    user:
+      linux:
+        gid: 0
+        supplementalGroups:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 6
+        - 10
+        - 11
+        - 20
+        - 26
+        - 27
+        uid: 0
+    volumeMounts:
+    - mountPath: /conf
+      name: upf-config
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-58g6f
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.170.171
+  hostIPs:
+  - ip: 192.168.170.171
+  observedGeneration: 1
+  phase: Running
+  podIP: 192.168.249.9
+  podIPs:
+  - ip: 192.168.249.9
+  qosClass: Burstable
+  resources:
+    limits:
+      cpu: "2"
+      memory: 2560Mi
+    requests:
+      cpu: 745m
+      memory: 1280Mi
+  startTime: "2026-10-06T06:50:51Z"

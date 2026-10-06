@@ -1,0 +1,15 @@
+I20261006 06:50:52.916400     7 main.cc:64] Launching BESS daemon in process mode...
+I20261006 06:50:52.916723     7 main.cc:77] bessd unknown
+I20261006 06:50:52.929342     7 bessd.cc:458] Loading plugin (attempt 1): /usr/bin/modules/sequential_update.so
+I20261006 06:50:52.930629     7 dpdk.cc:211] Initializing DPDK EAL with options: ["bessd", "--main-lcore", "127", "--lcores", "127@(0-3)", "--no-shconf", "-d", "/opt/bess/lib/dpdk-pmds", "--socket-mem", "1024", "--huge-unlink"]
+EAL: Detected CPU lcores: 4
+EAL: Detected NUMA nodes: 1
+EAL: Detected shared linkage of DPDK
+EAL: Selected IOVA mode 'VA'
+I20261006 06:50:53.233569     7 packet_pool.cc:53] Creating DpdkPacketPool for 262144 packets on node 0
+I20261006 06:50:53.233664     7 packet_pool.cc:74] PacketPool0 requests for 262144 packets
+I20261006 06:50:53.288175     7 packet_pool.cc:161] PacketPool0 has been created with 262144 packets
+I20261006 06:50:53.288707     7 pmd.cc:113] 0 DPDK PMD ports have been recognized:
+I20261006 06:50:53.288830     7 vport.cc:330] vport: BESS kernel module is not loaded. Loading...
+I20261006 06:50:53.288894     7 vport.cc:349] vport: No bess.ko found for autoload; continuing without kernel module support
+I20261006 06:50:53.288933     7 bessctl.cc:1935] Server listening on 127.0.0.1:10514

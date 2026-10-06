@@ -1,0 +1,16 @@
+# Build artifacts
+*.tar
+upf-epc/bess/
+upf-epc/cmd/
+upf-epc/pfcpiface/
+upf-epc/logger/
+upf-epc/pkg/
+
+# Editor / OS
+.DS_Store
+*.swp
+*~
+
+# Local overrides
+.env
+*.local.yaml

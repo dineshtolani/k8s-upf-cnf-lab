@@ -1,0 +1,19 @@
+2026-10-06T06:50:52.941Z	INFO	pfcpiface/main.go:31	setting log level to: debug	{"component": "UPF", "category": "Init"}
+2026-10-06T06:50:52.941Z	INFO	logger/logger.go:55	set log level: debug	{"component": "UPF", "category": "Init"}
+2026-10-06T06:50:52.942Z	INFO	pfcpiface/main.go:34	{Mode:af_packet AccessIface:{IfName:net1} CoreIface:{IfName:eth0} CPIface:{Peers:[] UseFQDN:false NodeID:192.168.170.190 HTTPPort: Dnn:internet EnableUeIPAlloc:true UEIPPool:172.250.0.0/16} EnableGtpuPathMonitoring:false EnableFlowMeasure:false SimInfo:{MaxSessions:0 StartUEIP:<nil> StartENBIP:<nil> StartAUPFIP:<nil> N6AppIP:<nil> N9AppIP:<nil> StartN3TEID: StartN9TEID: UplinkMBR:0 DownlinkMBR:0 UplinkGBR:0 DownlinkGBR:0} ConnTimeout:0 ReadTimeout:15 EnableNotifyBess:false EnableEndMarker:false NotifySockAddr: EndMarkerSockAddr: LogLevel:debug QciQosConfig:[] SliceMeterConfig:{N6RateBps:0 N6BurstBytes:0 N3RateBps:0 N3BurstBytes:0} MaxReqRetries:5 RespTimeout:2s EnableHBTimer:false HeartBeatInterval: N4Addr:}	{"component": "UPF", "category": "Init"}
+2026-10-06T06:50:52.995Z	ERROR	pfcpiface/bess.go:973	SetUpfInfo bess	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:52.995Z	ERROR	pfcpiface/bess.go:977	bessIP localhost:10514	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:52.996Z	DEBUG	pfcpiface/bess.go:912	clearing all the state in BESS	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.996Z	DEBUG	pfcpiface/bess.go:1126	pdrlookup resp: <nil>	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.996Z	ERROR	pfcpiface/bess.go:1087	pdrLookup clear did not complete: rpc error: code = DeadlineExceeded desc = context deadline exceeded	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.996Z	ERROR	pfcpiface/bess.go:923	failed to clear pdrLookup: rpc error: code = DeadlineExceeded desc = context deadline exceeded	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.996Z	DEBUG	pfcpiface/bess.go:1475	farlookup resp: <nil>	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.996Z	ERROR	pfcpiface/bess.go:1087	farLookup clear did not complete: rpc error: code = DeadlineExceeded desc = context deadline exceeded	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.997Z	ERROR	pfcpiface/bess.go:935	failed to clear farLookup: rpc error: code = DeadlineExceeded desc = context deadline exceeded	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.997Z	DEBUG	pfcpiface/bess.go:1786	qerlookup resp: <nil>	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.997Z	ERROR	pfcpiface/bess.go:1087	appQERLookup clear did not complete: rpc error: code = DeadlineExceeded desc = context deadline exceeded	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.997Z	ERROR	pfcpiface/bess.go:960	failed to clear appQERLookup	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.997Z	DEBUG	pfcpiface/bess.go:1786	qerlookup resp: <nil>	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.997Z	ERROR	pfcpiface/bess.go:1087	sessionQERLookup clear did not complete: rpc error: code = DeadlineExceeded desc = context deadline exceeded	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.997Z	ERROR	pfcpiface/bess.go:964	failed to clear sessionQERLookup	{"component": "UPF", "category": "BESS"}
+2026-10-06T06:50:53.999Z	INFO	pfcpiface/node.go:84	listening for new PFCP connections on [::]:8805	{"component": "UPF", "category": "Pfcp"}

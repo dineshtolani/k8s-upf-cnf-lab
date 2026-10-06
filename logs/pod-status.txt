@@ -1,0 +1,2 @@
+NAME       READY   STATUS    RESTARTS   AGE   IP              NODE       NOMINATED NODE   READINESS GATES
+upf-bess   2/2     Running   0          90m   192.168.249.9   k8snode1   <none>           <none>
